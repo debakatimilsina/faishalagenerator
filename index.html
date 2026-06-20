@@ -565,9 +565,9 @@ function decisionHtml(o,role1='वादी',role2='प्रतिवादी'
 <div class="decision-title title" data-title="फैसला">फैसला</div>
 <div class="decision-meta">मुद्दा नं.- <span class="table-text">${safe(o.caseNo||'')}</span></div>
 <div class="decision-meta">रजिष्ट्रेशन नं.- <span class="table-text">${safe(regNo||'')}</span></div>
-<div class="decision-meta">दर्ता मिति:- <span class="table-text">${safe(o.regDate||'')}</span></div>
-<div class="decision-meta">फैसला मिति:- <span class="e-text">${safe(decisionDate||'')}</span></div>
-<div class="decision-meta">नि.नं.:- ${editablePlaceholder()}</div>
+<div class="decision-meta">दर्ता मिति- <span class="table-text">${safe(o.regDate||'')}</span></div>
+<div class="decision-meta">फैसला मिति- <span class="e-text">${safe(decisionDate||'')}</span></div>
+<div class="decision-meta">नि.नं.-</div>
 <br>
 <div class="decision-issue">मुद्दा:- <span class="table-text">${safe(o.subject||'')}</span></div>
 <br>
@@ -577,12 +577,12 @@ function decisionHtml(o,role1='वादी',role2='प्रतिवादी'
 <div class="party-heading" data-party="2">${safe(role2||'प्रतिवादी')}</div>
 <div class="decision-list">1. <span class="table-text">${safe(o.party2||'')}</span></div>
 <br>
-<div>वादीको साक्षीः- ${editablePlaceholder()}</div>
-<div>प्रतिवादीको साक्षीः- ${editablePlaceholder()}</div>
-<div>अदालतबाट बुझेको साक्षीः- ${editablePlaceholder()}</div>
-<div>कागजः- ${editablePlaceholder()}</div>
+<div>वादीको साक्षी-</div>
+<div>प्रतिवादीको साक्षी- </div>
+<div>अदालतबाट बुझेको साक्षी- </div>
+<div>कागज- </div>
 <br>
-<div class="decision-intro">न्याय प्रशासन ऐन, २०७३ को दफा ७(१) तथा मुलुकी देवानी कार्यविधि संहिता, २०७४ को दफा १८ ले यसै अदालतको अधिकारक्षेत्रभित्रको भई दायर हुन आएको प्रस्तुत मुद्दाको संक्षिप्त तथ्य, ठहर एवं तपसील यसप्रकार छः-</div>
+<div class="decision-intro">न्याय प्रशासन ऐन, २०७३ को दफा ७(१) तथा मुलुकी देवानी कार्यविधि संहिता, २०७४ को दफा १८ ले यसै अदालतको अधिकारक्षेत्रभित्रको भई दायर हुन आएको प्रस्तुत मुद्दाको संक्षिप्त तथ्य, ठहर एवं तपसील यसप्रकार छ-</div>
 <br>
 <br>
 <div class="decision-signature">(${safe(judgeClean||'........................')})<br>जिल्ला न्यायाधीश</div>
@@ -592,7 +592,7 @@ function decisionHtml(o,role1='वादी',role2='प्रतिवादी'
 <br>
 <div class="decision-footer"><span class="e-text">${safe(formatDecisionItiDate(decisionDate))}</span></div>
 <br>
-<div class="cert-date">प्रमाणीकरण मितिः- ${editablePlaceholder()}</div>
+<div class="cert-date">प्रमाणीकरण मिति- </div>
 <div class="decision-seal">अदालतको छाप</div>
 </div>`
 }
