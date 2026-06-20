@@ -51,6 +51,16 @@
       #printArea .doc{display:block!important;box-shadow:none!important;border:0!important;max-width:none!important;margin:0!important;padding:0!important;color:#111!important;background:#fff!important;font-family:Kalimati,'Noto Sans Devanagari',serif!important;line-height:1.72!important}
       @page{size:A4;margin:22mm 18mm}
     }
+    /* Override: make preview B/I/U toolbar float on the right for active preview */
+    .doc-actions.fmtbar{position:fixed;right:18px;top:50%;transform:translateY(-50%);display:grid;gap:8px;align-items:center;grid-auto-flow:row;opacity:0;pointer-events:none;z-index:90}
+    .preview-card-active .doc-actions.fmtbar{opacity:1;pointer-events:auto}
+    .doc-actions.fmtbar .fmt-toggle{width:44px;height:44px;border-radius:999px;padding:0;border:1px solid var(--line);background:var(--panel);display:inline-grid;place-items:center;cursor:pointer;box-shadow:var(--shadow);font-weight:900}
+    .doc-actions.fmtbar .fmt-menu{display:grid;gap:8px;padding:8px;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);margin-top:6px}
+    .doc-actions.fmtbar .fmt-menu.hidden{display:none}
+    .doc-actions.fmtbar .fmt-menu.open{display:grid}
+    .doc-actions.fmtbar .fmtbtn{min-width:36px;height:36px;border-radius:8px;padding:0;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-weight:900;display:inline-grid;place-items:center}
+    .doc-actions.fmtbar .fmtbtn:hover{border-color:var(--brand2);color:var(--brand)}
+    @media(max-width:900px){.doc-actions.fmtbar{right:12px;bottom:84px;top:auto;transform:none;grid-auto-flow:column}}
   </style>
 </head>
 <body data-theme="light">
@@ -711,7 +721,7 @@ function pushTrash(item,reason='Removed'){
   return copy;
 }
 
-function docItem(g,p){const lineSpacing=Number((g.settings?.lineSpacing)||state.settings.lineSpacing||1.15)||1.15;const sid=safe(p.id);return `<div id="wrap_${sid}" data-preview-id="${sid}" class="${state.activePreviewId===p.id?'preview-card-active':''}" onmouseenter="setActivePreview('${sid}')" onclick="setActivePreview('${sid}')"><div class="docbar"><div class="docbar-left"><span class="badge">${safePreviewLabel(p)}</span><span class="${p.saved&&!p.dirty?'saved':'unsaved'}">${p.saved&&!p.dirty?'Saved':'Unsaved'}</span>${p.editMode?'<span class="badge warn">Full edit enabled</span>':''}</div><div class="doc-actions fmtbar" aria-label="Formatting"><button class="fmtbtn" title="Bold" onclick="event.stopPropagation();formatPreviewText('${sid}','bold')"><b>B</b></button><button class="fmtbtn" title="Italic" onclick="event.stopPropagation();formatPreviewText('${sid}','italic')"><i>I</i></button><button class="fmtbtn" title="Underline" onclick="event.stopPropagation();formatPreviewText('${sid}','underline')"><u>U</u></button></div></div><div class="doc" id="doc_${sid}" style="line-height:${lineSpacing};" data-editmode="${p.editMode?'true':'false'}" contenteditable="${p.editMode?'true':'false'}" onmousedown="guardPreviewEdit(event,'${sid}')" onfocusin="setActivePreview('${sid}');rememberPreviewCursor('${sid}',{silent:true})" onkeyup="rememberPreviewCursor('${sid}',{silent:true})" onmouseup="rememberPreviewCursor('${sid}',{silent:true})" onclick="setActivePreview('${sid}');rememberPreviewCursor('${sid}',{silent:true})" oninput="markUnsaved('${sid}');rememberPreviewCursor('${sid}',{silent:true})">${normalizePreviewEditableHtml(p.content,p.editMode)}</div></div>`}
+function docItem(g,p){const lineSpacing=Number((g.settings?.lineSpacing)||state.settings.lineSpacing||1.15)||1.15;const sid=safe(p.id);return `<div id="wrap_${sid}" data-preview-id="${sid}" class="${state.activePreviewId===p.id?'preview-card-active':''}" onmouseenter="setActivePreview('${sid}')" onclick="setActivePreview('${sid}')"><div class="docbar"><div class="docbar-left"><span class="badge">${safePreviewLabel(p)}</span><span class="${p.saved&&!p.dirty?'saved':'unsaved'}">${p.saved&&!p.dirty?'Saved':'Unsaved'}</span>${p.editMode?'<span class="badge warn">Full edit enabled</span>':''}</div><div class="doc-actions fmtbar" aria-label="Formatting"><div class="fmt-toggle" title="Formatting menu" onclick="event.stopPropagation();toggleFmtMenu('${sid}')">⋯</div><div class="fmt-menu hidden" id="fmt_menu_${sid}" onclick="event.stopPropagation()"><button class="fmtbtn" title="Bold" onclick="formatPreviewText('${sid}','bold')"><b>B</b></button><button class="fmtbtn" title="Italic" onclick="formatPreviewText('${sid}','italic')"><i>I</i></button><button class="fmtbtn" title="Underline" onclick="formatPreviewText('${sid}','underline')"><u>U</u></button><div style="height:8px"></div><button class="fmtbtn" title="Align Left" onclick="formatPreviewText('${sid}','justifyLeft')">L</button><button class="fmtbtn" title="Align Center" onclick="formatPreviewText('${sid}','justifyCenter')">C</button><button class="fmtbtn" title="Align Right" onclick="formatPreviewText('${sid}','justifyRight')">R</button><button class="fmtbtn" title="Justify" onclick="formatPreviewText('${sid}','justifyFull')">J</button></div></div><div class="doc" id="doc_${sid}" style="line-height:${lineSpacing};" data-editmode="${p.editMode?'true':'false'}" contenteditable="${p.editMode?'true':'false'}" onmousedown="guardPreviewEdit(event,'${sid}')" onfocusin="setActivePreview('${sid}');rememberPreviewCursor('${sid}',{silent:true})" onkeyup="rememberPreviewCursor('${sid}',{silent:true})" onmouseup="rememberPreviewCursor('${sid}',{silent:true})" onclick="setActivePreview('${sid}');rememberPreviewCursor('${sid}',{silent:true})" oninput="markUnsaved('${sid}');rememberPreviewCursor('${sid}',{silent:true})">${normalizePreviewEditableHtml(p.content,p.editMode)}</div></div>`}
 
 function saveActivePreview(){
   let id=state.activePreviewId;
@@ -738,6 +748,17 @@ function guardPreviewEdit(ev,id){
     }
   }
 }
+
+function toggleFmtMenu(sid){
+  const el=document.getElementById('fmt_menu_'+sid);
+  if(!el) return;
+  const open=!el.classList.contains('open');
+  document.querySelectorAll('.fmt-menu.open').forEach(m=>{ m.classList.remove('open'); m.classList.add('hidden'); });
+  if(open){ el.classList.remove('hidden'); el.classList.add('open'); } else { el.classList.remove('open'); el.classList.add('hidden'); }
+}
+document.addEventListener('click', e=>{
+  document.querySelectorAll('.fmt-menu.open').forEach(m=>{ if(!m.contains(e.target)) m.classList.remove('open'); });
+});
 
 function editableTargetForPreview(id){
   const doc=document.getElementById('doc_'+id);
